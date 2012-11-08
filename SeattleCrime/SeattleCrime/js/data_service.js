@@ -13,15 +13,13 @@ DataService = (function () {
     templater = function (template, params) {
         var key, value;
 
-        for (key in params) { // TODO: Add hasOwnProperty check
-            template = template.replace("#{" + key + "}", params[key]);
+        for (key in params) {
+            if (params.hasOwnProperty(key)) {
+                template = template.replace("#{" + key + "}", params[key]);
+            }
         }
 
         return template;
-        //key = params.key;
-        //value = params.value;
-
-        //return template.replace("#{" + key + "}", value);
     };
 
     dataParser = function (data) {
@@ -38,10 +36,12 @@ DataService = (function () {
 
     DataService = {};
 
-    DataService.get = function () {
+    DataService.get = function (limit) {
         var xhr, url, data;
 
-        url = templater(ENDPOINT_ROOT + QUERY_PARAMS, {"limit": 3});
+        limit = limit || 50;
+
+        url = templater(ENDPOINT_ROOT + QUERY_PARAMS, {"limit": limit});
 
         xhr = new XMLHttpRequest();
         xhr.open("GET", url, false); // TODO: Make async
