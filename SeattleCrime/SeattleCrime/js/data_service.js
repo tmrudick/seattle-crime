@@ -39,20 +39,24 @@ DataService = (function () {
     DataService = {};
 
     DataService.get = function (limit) {
-        var xhr, url, data;
+        return new WinJS.Promise(function (complete, error) {
+            var xhr, url, data;
 
-        limit = limit || 50;
+            limit = limit || 50;
 
-        url = templater(ENDPOINT_ROOT + QUERY_PARAMS, {"limit": limit});
+            url = templater(ENDPOINT_ROOT + QUERY_PARAMS, { "limit": limit });
 
-        xhr = new XMLHttpRequest();
-        xhr.open("GET", url, false); // TODO: Make async
-        xhr.send();
+            WinJS.xhr({ url: url }).done(function (result) {
+                if (result.status === 200) {
+                    data = result.responseXML;
+                    data = dataParser(data);
 
-        data = xhr.responseXML;
-        data = dataParser(data);
-
-        return data;
+                    complete(data);
+                } else {
+                    error();
+                }
+            });
+        });
     };
 
 

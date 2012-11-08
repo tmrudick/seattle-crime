@@ -52,17 +52,19 @@
             }
         }
 
-        DataService.get().forEach(function (position) {
-            var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
-            var pushpin = new Microsoft.Maps.Pushpin(location);
+        DataService.get(200).then(function (results) {
+            results.forEach(function (position) {
+                var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
+                var pushpin = new Microsoft.Maps.Pushpin(location);
 
-            pushpin.crimeInfo = position;
-            pushpin.title = position.type;
-            pushpin.description = position.description;
+                pushpin.crimeInfo = position;
+                pushpin.title = position.type;
+                pushpin.description = position.description;
 
-            Microsoft.Maps.Events.addHandler(pushpin, 'click', displayInfoBox);
+                Microsoft.Maps.Events.addHandler(pushpin, 'click', displayInfoBox);
 
-            dataLayer.push(pushpin);
+                dataLayer.push(pushpin);
+            });
         });
     }
 
