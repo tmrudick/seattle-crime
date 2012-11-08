@@ -1,4 +1,5 @@
-﻿var DataService;
+﻿/// <reference path="~/js/data_record.js" />
+var DataService;
 
 DataService = (function () {
     "use strict";
@@ -24,15 +25,12 @@ DataService = (function () {
     };
 
     dataParser = function (data) {
-        var i, locations, lat, long;
+        var i, locations;
 
         locations = [];
 
         for (i = 0; i < data.data.length; i++) {
-            lat = data.data[i][20];
-            long = data.data[i][21];
-
-            locations.push({ "lat": lat, "long": long });
+            locations.push(DataRecord.create(data.data[i]));
         }
 
         return locations;
