@@ -61,7 +61,6 @@
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\map.js" />
-    <Content Include="web.html" />
     <None Include="SeattleCrime_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
