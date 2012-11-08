@@ -1,8 +1,16 @@
 ﻿(function () {
     "use strict";
 
-    var map;
+    function renderTemplate(templateId, position) {
+        var template = document.getElementById(templateId);
 
+        return WinJS.UI.process(template).then(
+            function (templateControl) {
+                return templateControl.render(position);
+        });
+    }
+
+    var map;
     function GetMap() {
         var mapOptions =
         {
@@ -36,17 +44,21 @@
 
         function displayInfoBox(e) {
             if (e.targetType == 'pushpin') {
-                infobox.setLocation(e.target.getLocation());
-                infobox.setOptions({ visible: true, title: e.target.title, description: e.target.description });
+
+                renderTemplate('infobox-template', e.target.crimeInfo).done(function (html) {
+                    infobox.setLocation(e.target.getLocation());
+                    infobox.setOptions({ visible: true, title: e.target.title, description: html.innerHTML });
+                });
             }
         }
 
         DataService.get().forEach(function (position) {
-            var location = new Microsoft.Maps.Location(position.long, position.lat);
+            var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
             var pushpin = new Microsoft.Maps.Pushpin(location);
 
-            pushpin.title = "Some Event";
-            pushpin.description = "Some Description";
+            pushpin.crimeInfo = position;
+            pushpin.title = position.type;
+            pushpin.description = position.description;
 
             Microsoft.Maps.Events.addHandler(pushpin, 'click', displayInfoBox);
 

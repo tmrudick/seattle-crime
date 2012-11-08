@@ -19,6 +19,10 @@
     <script type="text/javascript" src="js/data_record.js"></script>
 </head>
 <body>
+    <div id="infobox-template" data-win-control="WinJS.Binding.Template">
+        <p data-win-bind="innerText: date"></p>
+        <p data-win-bind="innerText: description"></p>
+    </div>
     <div id="map"></div>
     <p id="center"></p>
 </body>
