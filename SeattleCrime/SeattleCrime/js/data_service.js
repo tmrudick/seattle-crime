@@ -4,10 +4,11 @@ var DataService;
 DataService = (function () {
     "use strict";
 
-    var DataService, ENDPOINT_ROOT, QUERY_PARAMS, templater, dataParser;
+    var DataService, ENDPOINT_ROOT, QUERY_PARAMS, RECORD_ELEMENT, templater, dataParser;
 
-    ENDPOINT_ROOT = "http://data.seattle.gov/api/views/3k2p-39jp/rows.json";
+    ENDPOINT_ROOT = "http://data.seattle.gov/api/views/3k2p-39jp/rows.xml";
     QUERY_PARAMS = "?max_rows=#{limit}"
+    RECORD_ELEMENT = "row[_uuid]"; // Row XML element with a _uuid parameter (we want to find a node with this parameter becuase the collection element is also called row [instead of 'rows'])
 
     // Quick regex replace function that takes a string and replaces the params.key with params.value
     templater = function (template, params) {
@@ -23,12 +24,13 @@ DataService = (function () {
     };
 
     dataParser = function (data) {
-        var i, locations;
+        var i, locations, xmlQueryResults;
 
         locations = [];
+        xmlQueryResults = data.querySelectorAll(RECORD_ELEMENT);
 
-        for (i = 0; i < data.data.length; i++) {
-            locations.push(DataRecord.create(data.data[i]));
+        for (i = 0; i < xmlQueryResults.length; i++) {
+            locations.push(DataRecord.create(xmlQueryResults[i]));
         }
 
         return locations;
@@ -47,8 +49,7 @@ DataService = (function () {
         xhr.open("GET", url, false); // TODO: Make async
         xhr.send();
 
-        data = JSON.parse(xhr.responseText);
-
+        data = xhr.responseXML;
         data = dataParser(data);
 
         return data;
