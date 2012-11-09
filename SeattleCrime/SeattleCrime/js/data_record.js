@@ -3,7 +3,7 @@
 DataRecord = (function () {
     "use strict";
 
-    var LONGITUDE, LATITUDE, DESCRIPTION, TYPE, SUBTYPE, DATE, STREET, DataRecord;
+    var LONGITUDE, LATITUDE, DESCRIPTION, TYPE, SUBTYPE, DATE, STREET, ID, DataRecord;
     
     // XML node names
     LONGITUDE = "longitude";
@@ -13,6 +13,7 @@ DataRecord = (function () {
     SUBTYPE = "event_clearance_subgroup";
     DATE = "event_clearance_date";
     STREET = "hundred_block_location";
+    ID = "cad_cdw_id";
 
     DataRecord = {};
 
@@ -32,6 +33,7 @@ DataRecord = (function () {
         record.latitude = xmlRecord.querySelector(LATITUDE).textContent;
         record.longitude = xmlRecord.querySelector(LONGITUDE).textContent;
         record.street = xmlRecord.querySelector(STREET).textContent;
+        record.id = xmlRecord.querySelector(ID).textContent;
 
         return record;
     }

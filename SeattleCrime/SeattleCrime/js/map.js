@@ -52,10 +52,23 @@
             }
         }
 
-        DataService.get(200).then(function (results) {
+        DataService.get(105).then(function (results) {
             results.forEach(function (position) {
                 var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
-                var pushpin = new Microsoft.Maps.Pushpin(location);
+
+                var now = new Date();
+                
+                var howOld = (now - position.date) / 1000 / 60;
+
+                var pushpin;
+
+                if (howOld <= 60) {
+                    pushpin = new Microsoft.Maps.Pushpin(location, { icon: '/images/pushpins/now.png' });
+                } else if (howOld <= 120) {
+                    pushpin = new Microsoft.Maps.Pushpin(location, { icon: '/images/pushpins/hour.png' });
+                } else {
+                    pushpin = new Microsoft.Maps.Pushpin(location, { icon: '/images/pushpins/2hour.png' });
+                }
 
                 pushpin.crimeInfo = position;
                 pushpin.title = position.type;
