@@ -20,10 +20,6 @@
         };
 
         map = new Microsoft.Maps.Map(document.getElementById("map"), mapOptions);
-        Microsoft.Maps.Events.addThrottledHandler(map, 'viewchangeend', function () {
-            var center = map.getCenter();
-            document.getElementById('center').innerText = center.latitude + ", " + center.longitude;
-        }, 250);
 
         //Add a layer for pushpin data
         var dataLayer = new Microsoft.Maps.EntityCollection();
@@ -52,7 +48,8 @@
             }
         }
 
-        DataService.get(105).then(function (results) {
+        // Get the data
+        DataService.get(300).then(function (results) {
             results.forEach(function (position) {
                 var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
 
@@ -78,6 +75,9 @@
 
                 dataLayer.push(pushpin);
             });
+
+            // Data is finished loading
+            document.getElementById('progress').style.visibility = 'hidden';
         });
     }
 
