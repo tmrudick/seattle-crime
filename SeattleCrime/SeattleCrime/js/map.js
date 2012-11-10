@@ -77,7 +77,7 @@
             });
 
             // Data is finished loading
-            document.getElementById('progress').style.visibility = 'hidden';
+            document.getElementById("progress-control").parentElement.removeChild(document.getElementById("progress-control"));
         });
     }
 

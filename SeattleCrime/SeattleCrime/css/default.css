@@ -1,20 +1,11 @@
 ﻿body {
 }
 
-#progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    opacity: .75;
-    background: #fff;
-}
-
-#progressSpinner {
+#progress-control {
     position: absolute;
     top: 50vh;
-    left: 50vw;
+    left: 0;
+    width: 100%;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
