@@ -1,7 +1,7 @@
 ﻿/// <reference path="~/js/data_record.js" />
 var DataService;
 
-DataService = (function () {
+DataService = (function (eventEmitter) {
     "use strict";
 
     var DataService, ENDPOINT_ROOT, QUERY_PARAMS, RECORD_ELEMENT, templater, dataParser;
@@ -39,26 +39,31 @@ DataService = (function () {
     DataService = {};
 
     DataService.get = function (limit) {
-        return new WinJS.Promise(function (complete, error) {
-            var xhr, url, data;
+        var xhr, url, data;
 
-            limit = limit || 50;
+        limit = limit || 50;
 
-            url = templater(ENDPOINT_ROOT + QUERY_PARAMS, { "limit": limit });
+        url = templater(ENDPOINT_ROOT + QUERY_PARAMS, { "limit": limit });
 
-            WinJS.xhr({ url: url }).done(function (result) {
-                if (result.status === 200) {
-                    data = result.responseXML;
-                    data = dataParser(data);
+        WinJS.xhr({ url: url }).done(function (result) {
+            if (result.status === 200) {
+                data = result.responseXML;
+                data = dataParser(data);
 
-                    complete(data);
-                } else {
-                    error();
-                }
-            });
+                eventEmitter({
+                    type: "new-data-records",
+                    data: data
+                });
+            } else {
+                eventEmitter({
+                    type: "new-data-error",
+                    error: result.statusText,
+                    errorNum: result.status
+                });
+            }
         });
     };
 
 
     return DataService;
-})();
+})(WinJS.Application.queueEvent);

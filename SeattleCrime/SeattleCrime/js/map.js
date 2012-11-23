@@ -48,9 +48,8 @@
             }
         }
 
-        // Get the data
-        DataService.get(300).then(function (results) {
-            results.forEach(function (position) {
+        var addDataToMap = function (event) {
+            event.data.forEach(function (position) {
                 var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
 
                 var now = new Date();
@@ -78,7 +77,11 @@
 
             // Data is finished loading
             document.getElementById("progress-control").parentElement.removeChild(document.getElementById("progress-control"));
-        });
+        };
+
+        // Get the data
+        WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
+        DataService.get(300);
     }
 
     //Initialization logic for loading the map control
