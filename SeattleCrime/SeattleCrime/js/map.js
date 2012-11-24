@@ -110,7 +110,7 @@
 
         // Get the data
         WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
-        DataService.live(30);
+        DataService.live(3);
     }
 
     //Initialization logic for loading the map control
