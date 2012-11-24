@@ -10,6 +10,8 @@
         });
     }
 
+    var crimes;
+
     var map;
     function GetMap() {
         var mapOptions =
@@ -49,7 +51,16 @@
         }
 
         var addDataToMap = function (event) {
+            if (!crimes) {
+                crimes = new WinJS.Binding.List();
+
+                // Bind the list view to the crimes list binding
+                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;
+                document.getElementById("crime-list").style.height = "100%";
+            }
+
             event.data.forEach(function (position) {
+                crimes.push(position);
                 var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
 
                 var now = new Date();
@@ -81,7 +92,7 @@
 
         // Get the data
         WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
-        DataService.get(300);
+        DataService.get(5);
     }
 
     //Initialization logic for loading the map control

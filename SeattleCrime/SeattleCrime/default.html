@@ -5,7 +5,7 @@
     <title>SeattleCrime</title>
 
     <!-- WinJS references -->
-    <link href="//Microsoft.WinJS.1.0/css/ui-dark.css" rel="stylesheet" />
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
     <script type="text/javascript" src="//Microsoft.WinJS.1.0/js/base.js"></script>
     <script type="text/javascript" src="//Microsoft.WinJS.1.0/js/ui.js"></script>
 
@@ -23,8 +23,33 @@
         <p data-win-bind="textContent: description"></p>
         <p data-win-bind="textContent: fuzzyDate"></p>
     </div>
+
+    <div id="crime-item-template" data-win-control="WinJS.Binding.Template">
+        <div class="crime-item">
+            <p data-win-bind="textContent: description"></p>
+            <p data-win-bind="textContent: fuzzyDate"></p>
+        </div>
+    </div>
+
     <div id="map"></div>
+    
+    <div id="text-list" class="win-overlay win-wide win-settingsflyout hidden">
+            <div class="win-ui-dark win-header" style="background-color:#464646"> <!-- Background color reflects app's personality -->
+               <div class="win-label">Seattle Crime</div>
+               <img src="images/smalllogo.png" style="position: absolute; right: 40px;"/>
+            </div>
+            <div class="win-content ">
+                <div class="win-settings-section">
+                    <div id="crime-list" data-win-control="WinJS.UI.ListView" data-win-options="{ selectionMode: 'single', layout: {type: WinJS.UI.ListLayout}, itemTemplate: select('#crime-item-template') }"></div>
+                </div>
+            </div>
+    </div>
 
     <progress id="progress-control" style="color:#666;" class="win-large"></progress>
+
+    <!-- Appbar -->
+    <div id="appbar" data-win-control="WinJS.UI.AppBar">
+        <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'show-list-button',label:'List',icon:'list',section:'global',tooltip:'Show List'}"></button>
+    </div>
 </body>
 </html>
