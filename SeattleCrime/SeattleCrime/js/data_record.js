@@ -3,17 +3,26 @@
 DataRecord = (function () {
     "use strict";
 
-    var LONGITUDE, LATITUDE, DESCRIPTION, TYPE, SUBTYPE, DATE, STREET, ID, DataRecord, fuzzyDate;
+    var POLICE, FIRE, DataRecord, createPoliceRecord, createFireRecord, fuzzyDate;
     
     // XML node names
-    LONGITUDE = "longitude";
-    LATITUDE = "latitude";
-    DESCRIPTION = "event_clearance_description";
-    TYPE = "event_clearance_group";
-    SUBTYPE = "event_clearance_subgroup";
-    DATE = "event_clearance_date";
-    STREET = "hundred_block_location";
-    ID = "cad_cdw_id";
+    POLICE = {};
+    POLICE.LONGITUDE = "longitude";
+    POLICE.LATITUDE = "latitude";
+    POLICE.DESCRIPTION = "event_clearance_description";
+    POLICE.TYPE = "event_clearance_group";
+    POLICE.SUBTYPE = "event_clearance_subgroup";
+    POLICE.DATE = "event_clearance_date";
+    POLICE.STREET = "hundred_block_location";
+    POLICE.ID = "cad_cdw_id";
+
+    FIRE = {};
+    FIRE.LONGITUDE = "longitude";
+    FIRE.LATITUDE = "latitude";
+    FIRE.TYPE = "type";
+    FIRE.DATE = "datetime";
+    FIRE.STREET = "address";
+    FIRE.ID = "incident_number";
 
     fuzzyDate = function (date) {
         /// <summary>Returns a fuzzy date (e.g. '10 minutes ago') for the given date object</summary>
@@ -50,25 +59,23 @@ DataRecord = (function () {
         return formattedMonth + "/" + formattedDay + "/" + formattedYear + " @ " + formattedHour + ":" + formattedMinute + " " + formattedSuffix;
     };
 
-    DataRecord = {};
-
-    DataRecord.create = function (xmlRecord) {
+    createPoliceRecord = function (xmlRecord) {
         var record;
 
         record = {};
 
-        if (xmlRecord.querySelector(DATE) !== null) {
-            record.date = new Date(xmlRecord.querySelector(DATE).textContent);
+        if (xmlRecord.querySelector(POLICE.DATE) !== null) {
+            record.date = new Date(xmlRecord.querySelector(POLICE.DATE).textContent);
         } else {
             record.date = new Date();
         }
-        record.type = xmlRecord.querySelector(TYPE).textContent;
-        record.subtype = xmlRecord.querySelector(SUBTYPE).textContent;
-        record.description = xmlRecord.querySelector(DESCRIPTION).textContent;
-        record.latitude = xmlRecord.querySelector(LATITUDE).textContent;
-        record.longitude = xmlRecord.querySelector(LONGITUDE).textContent;
-        record.street = xmlRecord.querySelector(STREET).textContent;
-        record.id = xmlRecord.querySelector(ID).textContent;
+        record.type = xmlRecord.querySelector(POLICE.TYPE).textContent;
+        record.subtype = xmlRecord.querySelector(POLICE.SUBTYPE).textContent;
+        record.description = xmlRecord.querySelector(POLICE.DESCRIPTION).textContent;
+        record.latitude = xmlRecord.querySelector(POLICE.LATITUDE).textContent;
+        record.longitude = xmlRecord.querySelector(POLICE.LONGITUDE).textContent;
+        record.street = xmlRecord.querySelector(POLICE.STREET).textContent;
+        record.id = xmlRecord.querySelector(POLICE.ID).textContent;
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
         Object.defineProperty(record, "fuzzyDate",
@@ -79,6 +86,48 @@ DataRecord = (function () {
             });
 
         return record;
+    };
+
+    createFireRecord = function (xmlRecord) {
+        var record;
+
+        record = {};
+
+        if (xmlRecord.querySelector(FIRE.DATE) !== null) {
+            record.date = new Date(xmlRecord.querySelector(FIRE.DATE).textContent * 1000); // Timestamp is in seconds; convert to ms for Date() object
+        } else {
+            record.date = new Date();
+        }
+        record.type = xmlRecord.querySelector(FIRE.TYPE).textContent;
+        record.subtype = xmlRecord.querySelector(FIRE.TYPE).textContent;
+        record.description = xmlRecord.querySelector(FIRE.TYPE).textContent;
+        record.latitude = xmlRecord.querySelector(FIRE.LATITUDE).textContent;
+        record.longitude = xmlRecord.querySelector(FIRE.LONGITUDE).textContent;
+        record.street = xmlRecord.querySelector(FIRE.STREET).textContent;
+        record.id = xmlRecord.querySelector(FIRE.ID).textContent;
+
+        // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
+        Object.defineProperty(record, "fuzzyDate",
+            {
+                get: function () { return fuzzyDate(this.date); },
+                enumerable: true,
+                configurable: true
+            });
+
+        return record;
+    };
+
+    DataRecord = {};
+
+    DataRecord.create = function (xmlRecord, type) {
+        if (type === DataService.ENDPOINTS.POLICE) {
+            return createPoliceRecord(xmlRecord);
+        } else if (type === DataService.ENDPOINTS.FIRE) {
+            return createFireRecord(xmlRecord);
+        } else {
+            // Do nothing
+            if (console && console.log) { console.warn("Unknown data record namespace: " + type); }
+        }
     };
 
     return DataRecord;
