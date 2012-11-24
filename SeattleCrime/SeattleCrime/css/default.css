@@ -8,6 +8,22 @@
     width: 100%;
 }
 
+#text-list {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 320px;
+}
+
+#text-list.hidden {
+    display: none;    
+}
+
+#appbar {
+    z-index: 1005;
+}
+
 @media screen and (-ms-view-state: fullscreen-landscape) {
 }
 

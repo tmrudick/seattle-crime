@@ -17,7 +17,15 @@
                 // TODO: This application has been reactivated from suspension.
                 // Restore application state here.
             }
-            args.setPromise(WinJS.UI.processAll());
+            args.setPromise(WinJS.UI.processAll().then(function() {
+                // Add appbar list button
+                document.getElementById('show-list-button').addEventListener('click', function () {
+                    document.getElementById('text-list').classList.toggle('hidden');
+
+                    // Force layout on the listview control so that it actually displays
+                    document.getElementById('crime-list').winControl.forceLayout();
+                });
+            }));
         }
     };
 
