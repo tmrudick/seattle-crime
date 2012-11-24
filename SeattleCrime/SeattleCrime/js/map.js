@@ -102,12 +102,15 @@
             });
 
             // Data is finished loading
-            document.getElementById("progress-control").parentElement.removeChild(document.getElementById("progress-control"));
+            var progressElement = document.getElementById("progress-control");
+            if (!!progressElement) {
+                document.getElementById("progress-control").parentElement.removeChild(progressElement);
+            }
         };
 
         // Get the data
         WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
-        DataService.get(10);
+        DataService.live(30);
     }
 
     //Initialization logic for loading the map control
