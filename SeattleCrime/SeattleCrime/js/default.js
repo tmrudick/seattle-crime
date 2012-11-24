@@ -22,18 +22,7 @@
                 document.getElementById('show-list-button').addEventListener('click', function () {
                     document.getElementById('text-list').classList.toggle('hidden');
 
-                    var crimeList = document.getElementById('crime-list');
-
-                    var parentContainer = crimeList.parentElement;
-                    var height = window.getComputedStyle(parentContainer).height;
-                    height = +(height.substring(0, height.length - 2));
-                    
-                    height -= parentContainer.offsetTop;
-
-                    crimeList.style.height = height + "px";
-
-                    // Force layout on the listview control so that it actually displays
-                    crimeList.winControl.forceLayout();
+                    layoutCrimeListView();
 
                     document.getElementById('appbar').winControl.hide();
                 });
@@ -52,3 +41,20 @@
 
     app.start();
 })();
+
+// TODO (tomrud): Move the map into a page control so this isn't super global
+function layoutCrimeListView() {
+    var crimeList = document.getElementById('crime-list');
+
+    var parentContainer = crimeList.parentElement;
+    var height = window.getComputedStyle(parentContainer).height;
+    height = +(height.substring(0, height.length - 2));
+
+    height -= parentContainer.offsetTop;
+
+    crimeList.style.height = height + "px";
+    crimeList.style.width = "280px"; // 320 - 40 padding
+
+    // Force layout on the listview control so that it actually displays
+    crimeList.winControl.forceLayout();
+}

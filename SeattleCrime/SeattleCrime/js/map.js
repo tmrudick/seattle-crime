@@ -125,8 +125,12 @@
     window.addEventListener("resize", function (e) {
         if (Windows.UI.ViewManagement.ApplicationView.value === Windows.UI.ViewManagement.ApplicationViewState.snapped) {
             map.setOptions({ height: window.innerHeight / 2, width: 320 });
+            layoutCrimeListView();
+            document.getElementById("crime-list").winControl.forceLayout();
         } else {
             map.setOptions({ height: null, width: null });
+            document.getElementById("text-list").classList.remove('hidden');
+            layoutCrimeListView();
         }
     });
 })();
