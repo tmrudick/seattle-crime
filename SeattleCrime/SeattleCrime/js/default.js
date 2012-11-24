@@ -22,8 +22,20 @@
                 document.getElementById('show-list-button').addEventListener('click', function () {
                     document.getElementById('text-list').classList.toggle('hidden');
 
+                    var crimeList = document.getElementById('crime-list');
+
+                    var parentContainer = crimeList.parentElement;
+                    var height = window.getComputedStyle(parentContainer).height;
+                    height = +(height.substring(0, height.length - 2));
+                    
+                    height -= parentContainer.offsetTop;
+
+                    crimeList.style.height = height + "px";
+
                     // Force layout on the listview control so that it actually displays
-                    document.getElementById('crime-list').winControl.forceLayout();
+                    crimeList.winControl.forceLayout();
+
+                    document.getElementById('appbar').winControl.hide();
                 });
             }));
         }

@@ -16,12 +16,53 @@
     width: 320px;
 }
 
+#text-list .win-label {
+    padding-left: 0;
+}
+
+#text-list .win-settings-section {
+    height: 100%;
+    padding-left: 40px;
+}
+   
+
+#crime-list {
+    overflow: hidden;
+}
+
+#crime-list .win-vertical.win-viewport .win-surface {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
 #text-list.hidden {
     display: none;    
 }
 
 #appbar {
     z-index: 1005;
+}
+
+.crime-item {
+    display: -ms-grid;
+    -ms-grid-columns: 2;
+    -ms-grid-rows: 2;
+}
+
+.crime-item img {
+    -ms-grid-column: 1;
+    -ms-grid-row: 1;
+}
+
+.crime-item .crime-description {
+    -ms-grid-column: 2;
+    -ms-grid-row: 1;
+}
+
+.crime-item .crime-date {
+    -ms-grid-column: 1;
+    -ms-grid-row: 2;
+    -ms-grid-column-span: 2;
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
