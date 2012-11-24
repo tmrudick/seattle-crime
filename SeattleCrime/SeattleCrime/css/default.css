@@ -72,6 +72,23 @@
 }
 
 @media screen and (-ms-view-state: snapped) {
+    #text-list {
+        display: block;
+        top: 50vh;
+        height: 50vh;
+    }
+
+    #text-list.hidden {
+        display: block;
+    }
+
+    #text-list .win-header {
+        display: none;
+    }
+
+    #map {
+        height: 100px;
+    }
 }
 
 @media screen and (-ms-view-state: fullscreen-portrait) {

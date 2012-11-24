@@ -121,4 +121,12 @@
 
         document.addEventListener("DOMContentLoaded", initialize, false);
     })();
+
+    window.addEventListener("resize", function (e) {
+        if (Windows.UI.ViewManagement.ApplicationView.value === Windows.UI.ViewManagement.ApplicationViewState.snapped) {
+            map.setOptions({ height: window.innerHeight / 2, width: 320 });
+        } else {
+            map.setOptions({ height: null, width: null });
+        }
+    });
 })();
