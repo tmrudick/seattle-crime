@@ -41,17 +41,22 @@ DataService = (function (eventEmitter) {
         xmlQueryResults = data.querySelectorAll(DataService.ENDPOINTS.RECORD_ELEMENT);
 
         for (i = 0; i < xmlQueryResults.length; i++) {
-            dataRecord = DataRecord.create(xmlQueryResults[i], endpoint);
-            if (console && console.log) { console.log("Created DataRecord object: " + JSON.stringify(dataRecord)); }
+            try {
+                dataRecord = DataRecord.create(xmlQueryResults[i], endpoint);
+                if (console && console.log) { console.log("Created DataRecord object: " + JSON.stringify(dataRecord)); }
 
-            if (dataRecord.date.getTime() > newestDate) { newestDate = dataRecord.date.getTime(); } // New high-water mark
+                if (dataRecord.date.getTime() > newestDate) { newestDate = dataRecord.date.getTime(); } // New high-water mark
 
-            if (dataRecord.date.getTime() > endpoint.latestEventSeen) { // Filter out data that we've already returned
-                if (console && console.log) { console.log("Returning new DataRecord object: " + JSON.stringify(dataRecord)); }
-                locations.push(dataRecord);
-            } else {
-                // Do nothing
-                if (console && console.log) { console.log("Filtering out already seen DataRecord object: " + JSON.stringify(dataRecord)); }
+                if (dataRecord.date.getTime() > endpoint.latestEventSeen) { // Filter out data that we've already returned
+                    if (console && console.log) { console.log("Returning new DataRecord object: " + JSON.stringify(dataRecord)); }
+                    locations.push(dataRecord);
+                } else {
+                    // Do nothing
+                    if (console && console.log) { console.log("Filtering out already seen DataRecord object: " + JSON.stringify(dataRecord)); }
+                }
+            } catch (e) {
+                // Error parsing an entry; do nothing
+                if (console && console.log) { console.log("Error parsing data record: " + e.message); }
             }
         }
 

@@ -69,13 +69,13 @@ DataRecord = (function () {
         } else {
             record.date = new Date();
         }
-        record.type = xmlRecord.querySelector(POLICE.TYPE).textContent;
-        record.subtype = xmlRecord.querySelector(POLICE.SUBTYPE).textContent;
-        record.description = xmlRecord.querySelector(POLICE.DESCRIPTION).textContent;
+        record.type = (!!xmlRecord.querySelector(POLICE.TYPE)) ? (xmlRecord.querySelector(POLICE.TYPE).textContent) : "Unknown";
+        record.subtype = (!!xmlRecord.querySelector(POLICE.SUBTYPE)) ? (xmlRecord.querySelector(POLICE.SUBTYPE).textContent) : "Unknown";
+        record.description = (!!xmlRecord.querySelector(POLICE.DESCRIPTION)) ? (xmlRecord.querySelector(POLICE.DESCRIPTION).textContent) : "Unknown";
         record.latitude = xmlRecord.querySelector(POLICE.LATITUDE).textContent;
         record.longitude = xmlRecord.querySelector(POLICE.LONGITUDE).textContent;
-        record.street = xmlRecord.querySelector(POLICE.STREET).textContent;
-        record.id = xmlRecord.querySelector(POLICE.ID).textContent;
+        record.street = (!!xmlRecord.querySelector(POLICE.STREET)) ? (xmlRecord.querySelector(POLICE.STREET).textContent) : "Unknown";
+        record.id = !!xmlRecord.querySelector(POLICE.ID).textContent;
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
         Object.defineProperty(record, "fuzzyDate",
@@ -98,12 +98,12 @@ DataRecord = (function () {
         } else {
             record.date = new Date();
         }
-        record.type = xmlRecord.querySelector(FIRE.TYPE).textContent;
-        record.subtype = xmlRecord.querySelector(FIRE.TYPE).textContent;
-        record.description = xmlRecord.querySelector(FIRE.TYPE).textContent;
+        record.type = (!!xmlRecord.querySelector(FIRE.TYPE)) ? (xmlRecord.querySelector(FIRE.TYPE).textContent) : "Unknown";
+        record.subtype = (!!xmlRecord.querySelector(FIRE.TYPE)) ? (xmlRecord.querySelector(FIRE.TYPE).textContent) : "Unknown";
+        record.description = (!!xmlRecord.querySelector(FIRE.TYPE)) ? (xmlRecord.querySelector(FIRE.TYPE).textContent) : "Unknown";
         record.latitude = xmlRecord.querySelector(FIRE.LATITUDE).textContent;
         record.longitude = xmlRecord.querySelector(FIRE.LONGITUDE).textContent;
-        record.street = xmlRecord.querySelector(FIRE.STREET).textContent;
+        record.street = (!!xmlRecord.querySelector(FIRE.STREET)) ? (xmlRecord.querySelector(FIRE.STREET).textContent) : "Unknown";
         record.id = xmlRecord.querySelector(FIRE.ID).textContent;
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
