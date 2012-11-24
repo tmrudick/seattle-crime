@@ -53,7 +53,7 @@ function layoutCrimeListView() {
     height -= parentContainer.offsetTop;
 
     crimeList.style.height = height + "px";
-    crimeList.style.width = "280px"; // 320 - 40 padding
+    crimeList.style.width = "320px";
 
     // Force layout on the listview control so that it actually displays
     crimeList.winControl.forceLayout();

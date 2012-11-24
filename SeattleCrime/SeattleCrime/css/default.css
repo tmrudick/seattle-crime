@@ -8,6 +8,15 @@
     width: 100%;
 }
 
+/*
+    Override the margin and width properties of the ListView container to force the container to span 
+    the entire width of the ListView
+*/
+.win-listview > .win-vertical .win-container {
+   margin-left: 0px;
+   width: 100% !important;
+}
+
 #text-list {
     position: absolute;
     top: 0;
@@ -27,7 +36,7 @@
 
 #text-list .win-settings-section {
     height: 100%;
-    padding-left: 40px;
+    padding-left: 0px;
 }
    
 
@@ -47,23 +56,40 @@
 .crime-item {
     display: -ms-grid;
     -ms-grid-columns: 2;
-    -ms-grid-rows: 2;
+    -ms-grid-rows: 3;
+    padding-left: 40px;
+}
+
+.crime-item:hover {
+    background-color: #B3B3B3;
 }
 
 .crime-item img {
     -ms-grid-column: 1;
     -ms-grid-row: 1;
+    width: 24px;
+    height: 38px;
 }
 
 .crime-item .crime-description {
     -ms-grid-column: 2;
     -ms-grid-row: 1;
+    margin: 4px 0px 0px 4px;
+    font-weight: bold;
+}
+
+.crime-item .crime-location {
+    -ms-grid-column: 2;
+    -ms-grid-row: 2;
+    margin: 0px 0px 0px 4px;
+
 }
 
 .crime-item .crime-date {
-    -ms-grid-column: 1;
-    -ms-grid-row: 2;
-    -ms-grid-column-span: 2;
+    -ms-grid-column: 2;
+    -ms-grid-row: 3;
+    margin: 0px 0px 0px 4px;
+
 }
 
 @media screen and (-ms-view-state: fullscreen-landscape) {
