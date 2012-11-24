@@ -51,12 +51,12 @@
         }
 
         var addDataToMap = function (event) {
+            // TODO (tomrud): Don't do this anymore. Create a maps page control
             if (!crimes) {
                 crimes = new WinJS.Binding.List();
 
                 // Bind the list view to the crimes list binding
-                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;
-                document.getElementById("crime-list").style.height = "100%";
+                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;                
             }
 
             event.data.forEach(function (position) {
