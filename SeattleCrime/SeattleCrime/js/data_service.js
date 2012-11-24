@@ -95,7 +95,7 @@ DataService = (function (eventEmitter) {
         pollFrequency = pollFrequency || 30;
         pollFrequency *= 1000; // Convert seconds to milliseconds
 
-        DataService.get(3);
+        DataService.get(125);
 
         liveEventId = window.setInterval(function () { DataService.get(50); }, pollFrequency);
     };
