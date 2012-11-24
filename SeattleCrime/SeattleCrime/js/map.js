@@ -44,7 +44,6 @@
 
         function displayInfoBox(e) {
             if (e.targetType == 'pushpin') {
-
                 renderTemplate('infobox-template', e.target.crimeInfo).done(function (html) {
                     infobox.setLocation(e.target.getLocation());
                     infobox.setOptions({ visible: true, title: e.target.title, description: html.innerHTML });
@@ -58,7 +57,13 @@
                 crimes = new WinJS.Binding.List();
 
                 // Bind the list view to the crimes list binding
-                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;                
+                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;
+                document.getElementById("crime-list").addEventListener('iteminvoked', function (evt) {
+                    evt.detail.itemPromise.then(function (item) {
+                        Microsoft.Maps.Events.invoke(item.data.pushpin, 'click', { targetType: 'pushpin', target: item.data.pushpin });
+                        map.setView({ center: item.data.pushpin._location, zoom: 15, animate: true });
+                    });
+                });
             }
 
             event.data.forEach(function (position) {
@@ -102,7 +107,7 @@
 
         // Get the data
         WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
-        DataService.get(250);
+        DataService.get(10);
     }
 
     //Initialization logic for loading the map control
