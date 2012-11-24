@@ -11,8 +11,10 @@
     }
 
     var crimes;
-
     var map;
+
+    var MAX_PUSHPIN_COUNT = 250;
+
     function GetMap() {
         var mapOptions =
         {
@@ -60,7 +62,13 @@
             }
 
             event.data.forEach(function (position) {
-                crimes.push(position);
+                // If we have more pushpins than our max count, remove one of the older ones
+                if (crimes.length >= MAX_PUSHPIN_COUNT) {
+                    var objToRemove = crimes.pop();
+
+                    dataLayer.remove(objToRemove.pushpin);
+                }
+
                 var location = new Microsoft.Maps.Location(position.latitude, position.longitude);
 
                 var now = new Date();
@@ -84,6 +92,8 @@
                 Microsoft.Maps.Events.addHandler(pushpin, 'click', displayInfoBox);
 
                 dataLayer.push(pushpin);
+                position.pushpin = pushpin;
+                crimes.push(position);
             });
 
             // Data is finished loading
@@ -92,7 +102,7 @@
 
         // Get the data
         WinJS.Application.addEventListener("new-data-records", addDataToMap, false);
-        DataService.get(5);
+        DataService.get(250);
     }
 
     //Initialization logic for loading the map control
