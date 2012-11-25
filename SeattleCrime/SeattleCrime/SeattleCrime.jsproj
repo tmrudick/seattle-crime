@@ -66,6 +66,12 @@
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\map.js" />
+    <Content Include="pages\about\about.css" />
+    <Content Include="pages\about\about.html" />
+    <Content Include="pages\about\about.js" />
+    <Content Include="pages\privacy\privacy.css" />
+    <Content Include="pages\privacy\privacy.html" />
+    <Content Include="pages\privacy\privacy.js" />
     <None Include="SeattleCrime_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
