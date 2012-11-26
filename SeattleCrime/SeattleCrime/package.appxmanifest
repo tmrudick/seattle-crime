@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="SeattleCrime" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="SeattleCrime" ForegroundText="light" BackgroundColor="#005000">
-        <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="images\splashscreen.png" />
+      <VisualElements DisplayName="Seattle Alerts" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Seattle Alerts is an application that maps recent 911 events in Seattle." ForegroundText="light" BackgroundColor="#5D9632">
+        <DefaultTile ShowName="allLogos" ShortName="Seattle Alerts" />
+        <SplashScreen Image="images\splashscreen.png" BackgroundColor="#5D9632" />
       </VisualElements>
     </Application>
   </Applications>
