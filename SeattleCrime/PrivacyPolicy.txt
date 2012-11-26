@@ -1,0 +1,3 @@
+Seattle Alerts Privacy Policy:
+
+This application does not collect or share any personal information. Your IP address (and related data provided by the operating system when making a web request) may be logged by the Internet-based servers (controlled by the city of Seattle, Washington, USA) that provide the data used by the application.

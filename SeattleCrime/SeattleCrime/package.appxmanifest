@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="91d11559-f8d9-40dd-9a36-0619a964a75b" Version="1.0.0.0" Publisher="CN=tomrud" />
+  <Identity Name="53027TomRudick.SeattleAlerts" Version="1.0.0.0" Publisher="CN=6A76D30F-CFFA-4CC5-91C1-370888043632" />
   <Properties>
-    <DisplayName>SeattleCrime</DisplayName>
-    <PublisherDisplayName>tomrud</PublisherDisplayName>
+    <DisplayName>Seattle Alerts</DisplayName>
+    <PublisherDisplayName>The Monadics</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Seattle Alerts" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Seattle Alerts is an application that maps recent 911 events in Seattle." ForegroundText="light" BackgroundColor="#5D9632">
+      <VisualElements DisplayName="Seattle Alerts" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Seattle Alerts maps the most recent Police, Fire, and EMS 911 incidents. New incidents are automatically pulled in and mapped while the application is running. All data sourced from http://data.seattle.gov." ForegroundText="light" BackgroundColor="#5D9632">
         <DefaultTile ShowName="allLogos" ShortName="Seattle Alerts" />
         <SplashScreen Image="images\splashscreen.png" BackgroundColor="#5D9632" />
       </VisualElements>
