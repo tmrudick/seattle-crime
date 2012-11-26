@@ -26,23 +26,26 @@ DataRecord = (function () {
     };
 
     // XML value selector functions
+    // this 'this' value of the function will be bound to the XML document
     POLICE = {};
-    POLICE.LONGITUDE = "longitude";
-    POLICE.LATITUDE = "latitude";
-    POLICE.DESCRIPTION = "event_clearance_description";
-    POLICE.TYPE = "event_clearance_group";
-    POLICE.SUBTYPE = "event_clearance_subgroup";
-    POLICE.DATE = "event_clearance_date";
-    POLICE.STREET = "hundred_block_location";
-    POLICE.ID = "cad_cdw_id";
+    POLICE.LONGITUDE = function () { return this.querySelector("longitude").textContent; };
+    POLICE.LATITUDE = function () { return this.querySelector("latitude").textContent; };
+    POLICE.DESCRIPTION = function () { return this.querySelector("event_clearance_description").textContent; };
+    POLICE.TYPE = function () { return this.querySelector("event_clearance_group").textContent; };
+    POLICE.SUBTYPE = function () { return this.querySelector("event_clearance_subgroup").textContent; };
+    POLICE.DATE = function () { return new Date(this.querySelector("event_clearance_date").textContent); };
+    POLICE.STREET = function () { return this.querySelector("hundred_block_location").textContent; };
+    POLICE.ID = function () { return this.querySelector("cad_cdw_id").textContent; };
 
     FIRE = {};
-    FIRE.LONGITUDE = "longitude";
-    FIRE.LATITUDE = "latitude";
-    FIRE.TYPE = "type";
-    FIRE.DATE = "datetime";
-    FIRE.STREET = "address";
-    FIRE.ID = "incident_number";
+    FIRE.LONGITUDE = function () { return this.querySelector("longitude").textContent; };
+    FIRE.LATITUDE = function () { return this.querySelector("latitude").textContent; };
+    FIRE.TYPE = function () { return this.querySelector("type").textContent; };
+    FIRE.SUBTYPE = function () { return this.querySelector("type").textContent; };
+    FIRE.DESCRIPTION = function () { return this.querySelector("type").textContent; };
+    FIRE.DATE = function () { return new Date(this.querySelector("datetime").textContent * 1000); };
+    FIRE.STREET = function () { return this.querySelector("address").textContent; };
+    FIRE.ID = function () { return this.querySelector("incident_number").textContent; };
 
     fuzzyDate = function (date) {
         /// <summary>Returns a fuzzy date (e.g. '10 minutes ago') for the given date object</summary>
@@ -84,14 +87,14 @@ DataRecord = (function () {
 
         record = {};
 
-        record.date = valueOrDefault(function () { return new Date(xmlRecord.querySelector(POLICE.DATE).textContent); }, (new Date()));
-        record.type = valueOrDefault(function () { return xmlRecord.querySelector(POLICE.TYPE).textContent; }, "Unknown");
-        record.subtype = valueOrDefault(function () { return xmlRecord.querySelector(POLICE.SUBTYPE).textContent; }, "Unknown");
-        record.description = valueOrDefault(function () { return xmlRecord.querySelector(POLICE.DESCRIPTION).textContent; }, "Unknown");
-        record.latitude = xmlRecord.querySelector(POLICE.LATITUDE).textContent;
-        record.longitude = xmlRecord.querySelector(POLICE.LONGITUDE).textContent;
-        record.street = valueOrDefault(function () { return xmlRecord.querySelector(POLICE.STREET).textContent; }, "Unknown");
-        record.id = !!xmlRecord.querySelector(POLICE.ID).textContent;
+        record.date = valueOrDefault(POLICE.DATE.bind(xmlRecord), (new Date()));
+        record.type = valueOrDefault(POLICE.TYPE.bind(xmlRecord), "Unknown");
+        record.subtype = valueOrDefault(POLICE.SUBTYPE.bind(xmlRecord), "Unknown");
+        record.description = valueOrDefault(POLICE.DESCRIPTION.bind(xmlRecord), "Unknown");
+        record.latitude = (POLICE.LATITUDE.bind(xmlRecord))();
+        record.longitude = (POLICE.LONGITUDE.bind(xmlRecord))();
+        record.street = valueOrDefault(POLICE.STREET.bind(xmlRecord), "Unknown");
+        record.id = (POLICE.ID.bind(xmlRecord))();
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
         Object.defineProperty(record, "fuzzyDate",
@@ -109,14 +112,14 @@ DataRecord = (function () {
 
         record = {};
 
-        record.date = valueOrDefault(function () { return new Date(xmlRecord.querySelector(FIRE.DATE).textContent * 1000); }, (new Date())); // Timestamp is in seconds; convert to ms for Date() object 
-        record.type = valueOrDefault(function () { return xmlRecord.querySelector(FIRE.TYPE).textContent; }, "Unknown");
-        record.subtype = valueOrDefault(function () { return xmlRecord.querySelector(FIRE.TYPE).textContent; }, "Unknown");
-        record.description = valueOrDefault(function () { return xmlRecord.querySelector(FIRE.TYPE).textContent; }, "Unknown");
-        record.latitude = xmlRecord.querySelector(FIRE.LATITUDE).textContent;
-        record.longitude = xmlRecord.querySelector(FIRE.LONGITUDE).textContent;
-        record.street = valueOrDefault(function () { return xmlRecord.querySelector(FIRE.STREET).textContent; }, "Unknown");
-        record.id = xmlRecord.querySelector(FIRE.ID).textContent;
+        record.date = valueOrDefault(FIRE.DATE.bind(xmlRecord), (new Date())); // Timestamp is in seconds; convert to ms for Date() object 
+        record.type = valueOrDefault(FIRE.TYPE.bind(xmlRecord), "Unknown");
+        record.subtype = valueOrDefault(FIRE.SUBTYPE.bind(xmlRecord), "Unknown");
+        record.description = valueOrDefault(FIRE.DESCRIPTION.bind(xmlRecord), "Unknown");
+        record.latitude = (FIRE.LATITUDE.bind(xmlRecord))();
+        record.longitude = (FIRE.LONGITUDE.bind(xmlRecord))();
+        record.street = valueOrDefault(FIRE.STREET.bind(xmlRecord), "Unknown");
+        record.id = (FIRE.ID.bind(xmlRecord))();
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
         Object.defineProperty(record, "fuzzyDate",
