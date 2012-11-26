@@ -96,6 +96,7 @@ DataService = (function (eventEmitter) {
     DataService.live = function (pollFrequency) {
         /// <summary>Starts the DataService looping and returning new records every pollFrequency.</summary>
         /// <param name="pollFrequency" type="Number">The time to wait (in seconds) between updates.</param>
+        /// <returns type="undefined">Nothing</returns>
 
         pollFrequency = pollFrequency || 30;
         pollFrequency *= 1000; // Convert seconds to milliseconds
@@ -107,6 +108,7 @@ DataService = (function (eventEmitter) {
 
     DataService.stop = function () {
         /// <summary>Turn off a polling loop started by .live().</summary>
+        /// <returns type="undefined">Nothing</returns>
 
         window.clearInterval(liveEventId);
     }

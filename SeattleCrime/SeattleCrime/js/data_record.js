@@ -3,30 +3,11 @@
 DataRecord = (function () {
     "use strict";
 
-    var POLICE, FIRE, DataRecord, createPoliceRecord, createFireRecord, fuzzyDate, valueOrDefault;
-    
-    valueOrDefault = function (valFunction, defaultValue) {
-        /// <summary>
-        ///     Tries to evaluate the valFunction, returning it if it returns a truthy value.
-        ///     If the value is falsy or throws an exception, return the defaultValue.
-        /// </summary>
-        /// <param name="valFunction" type="Function">A function that returns a value.</param>
-        /// <param name="defaultValue" type="Object">The default value to be returned if valFunction fails to return a value.</param>
-        /// <returns>Returns the value of valFunction if possible, defaultValue otherwise.</returns>
-
-        try {
-            var returnValue = valFunction();
-
-            if (returnValue) { return returnValue; }
-            else { return defaultValue; }
-        } catch (e) {
-            // Swallow exception
-            return defaultValue;
-        }
-    };
+    var POLICE, FIRE, DataRecord, createRecord, fuzzyDate, valueOrDefault;
 
     // XML value selector functions
-    // this 'this' value of the function will be bound to the XML document
+    // The 'this' value of the function will be bound to the XML document. Each function should take the XML DOM element and return
+    // the parsed field's value.
     POLICE = {};
     POLICE.LONGITUDE = function () { return this.querySelector("longitude").textContent; };
     POLICE.LATITUDE = function () { return this.querySelector("latitude").textContent; };
@@ -48,7 +29,7 @@ DataRecord = (function () {
     FIRE.ID = function () { return this.querySelector("incident_number").textContent; };
 
     fuzzyDate = function (date) {
-        /// <summary>Returns a fuzzy date (e.g. '10 minutes ago') for the given date object</summary>
+        /// <summary>Returns a fuzzy date (e.g. '10 minutes ago') for the given date object.</summary>
         /// <param name="date" type="Date">The date to be made fuzzy.</param>
         /// <returns type="String">The fuzzy date as a string, if the fuzzy date is beyone one day, the regular date is returned.</returns>
         var MILLISECOND, SECOND, MINUTE, HOUR, DAY, delta, formattedMonth, formattedDay, formattedYear, formattedHour, formattedMinute, formattedSuffix;
@@ -82,44 +63,55 @@ DataRecord = (function () {
         return formattedMonth + "/" + formattedDay + "/" + formattedYear + " @ " + formattedHour + ":" + formattedMinute + " " + formattedSuffix;
     };
 
-    createPoliceRecord = function (xmlRecord) {
-        var record;
+    valueOrDefault = function (valFunction, defaultValue) {
+        /// <summary>
+        ///     Tries to evaluate the valFunction, returning it if it returns a truthy value.
+        ///     If the value is falsy or throws an exception, return the defaultValue.
+        /// </summary>
+        /// <param name="valFunction" type="Function">A function that returns a value.</param>
+        /// <param name="defaultValue" type="Object">The default value to be returned if valFunction fails to return a value.</param>
+        /// <returns type="Object">Returns the value of valFunction if possible, defaultValue otherwise.</returns>
 
-        record = {};
+        try {
+            var returnValue = valFunction();
 
-        record.date = valueOrDefault(POLICE.DATE.bind(xmlRecord), (new Date()));
-        record.type = valueOrDefault(POLICE.TYPE.bind(xmlRecord), "Unknown");
-        record.subtype = valueOrDefault(POLICE.SUBTYPE.bind(xmlRecord), "Unknown");
-        record.description = valueOrDefault(POLICE.DESCRIPTION.bind(xmlRecord), "Unknown");
-        record.latitude = (POLICE.LATITUDE.bind(xmlRecord))();
-        record.longitude = (POLICE.LONGITUDE.bind(xmlRecord))();
-        record.street = valueOrDefault(POLICE.STREET.bind(xmlRecord), "Unknown");
-        record.id = (POLICE.ID.bind(xmlRecord))();
-
-        // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
-        Object.defineProperty(record, "fuzzyDate",
-            {
-                get: function () { return fuzzyDate(this.date); },
-                enumerable: true,
-                configurable: true
-            });
-
-        return record;
+            if (returnValue) { return returnValue; }
+            else { return defaultValue; }
+        } catch (e) {
+            // Swallow exception
+            return defaultValue;
+        }
     };
 
-    createFireRecord = function (xmlRecord) {
+    createRecord = function (xmlRecord, SELECTOR_FAMILY) {
+        /// <summary>Takes the XML document and parses out the interesting fields and creates a DataRecord object.</summary>
+        /// <param name="xmlRecord" type="DOMElement">XML DOM Element representing the DataRecord to create.</param>
+        /// <param name="SELECTOR_FAMILY type="Object">
+        /// The dictionary of selector functions to use to parse the XML element. The dictionary should have the following keys:
+        /// - DATE
+        /// - TYPE
+        /// - SUBTYPE
+        /// - DESCRIPTION
+        /// - LATITUDE
+        /// - LONGITUDE
+        /// - STREET
+        /// - ID
+        /// and each key's value is a function. The function should use the xmlRecord as its 'this', and when evaluated return the
+        /// value to put into the DataRecord.
+        /// </param>
+        /// <returns type="DataRecord">The new DataRecord object created from the values in xmlRecord.</returns>
         var record;
 
         record = {};
 
-        record.date = valueOrDefault(FIRE.DATE.bind(xmlRecord), (new Date())); // Timestamp is in seconds; convert to ms for Date() object 
-        record.type = valueOrDefault(FIRE.TYPE.bind(xmlRecord), "Unknown");
-        record.subtype = valueOrDefault(FIRE.SUBTYPE.bind(xmlRecord), "Unknown");
-        record.description = valueOrDefault(FIRE.DESCRIPTION.bind(xmlRecord), "Unknown");
-        record.latitude = (FIRE.LATITUDE.bind(xmlRecord))();
-        record.longitude = (FIRE.LONGITUDE.bind(xmlRecord))();
-        record.street = valueOrDefault(FIRE.STREET.bind(xmlRecord), "Unknown");
-        record.id = (FIRE.ID.bind(xmlRecord))();
+        record.date = valueOrDefault(SELECTOR_FAMILY.DATE.bind(xmlRecord), (new Date())); // Timestamp is in seconds; convert to ms for Date() object 
+        record.type = valueOrDefault(SELECTOR_FAMILY.TYPE.bind(xmlRecord), "Unknown");
+        record.subtype = valueOrDefault(SELECTOR_FAMILY.SUBTYPE.bind(xmlRecord), "Unknown");
+        record.description = valueOrDefault(SELECTOR_FAMILY.DESCRIPTION.bind(xmlRecord), "Unknown");
+        record.latitude = (SELECTOR_FAMILY.LATITUDE.bind(xmlRecord))();
+        record.longitude = (SELECTOR_FAMILY.LONGITUDE.bind(xmlRecord))();
+        record.street = valueOrDefault(SELECTOR_FAMILY.STREET.bind(xmlRecord), "Unknown");
+        record.id = (SELECTOR_FAMILY.ID.bind(xmlRecord))();
 
         // Add the fuzzy date as a getter on this object so we can treat it like a normal property for WinJS binding.
         Object.defineProperty(record, "fuzzyDate",
@@ -136,9 +128,9 @@ DataRecord = (function () {
 
     DataRecord.create = function (xmlRecord, type) {
         if (type === DataService.ENDPOINTS.POLICE) {
-            return createPoliceRecord(xmlRecord);
+            return createRecord(xmlRecord, POLICE);
         } else if (type === DataService.ENDPOINTS.FIRE) {
-            return createFireRecord(xmlRecord);
+            return createRecord(xmlRecord, FIRE);
         } else {
             // Do nothing
             if (console && console.log) { console.warn("Unknown data record namespace: " + type); }
