@@ -53,8 +53,8 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\SeattleCrime\js\data_record.js">
-      <Link>js\references\data_record.js</Link>
+    <Content Include="..\SeattleCrime\js\DataRecord.js">
+      <Link>js\references\DataRecord.js</Link>
     </Content>
     <Content Include="css\qunit-1.10.0.css" />
     <Content Include="default.html" />

@@ -63,13 +63,14 @@
     <Content Include="images\smalllogo.png" />
     <Content Include="images\splashscreen.png" />
     <Content Include="images\storelogo.png" />
-    <Content Include="js\data_record.js" />
+    <Content Include="js\DataRecordParser.js" />
     <Content Include="js\data_service.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\map.js" />
     <None Include="SeattleCrime_StoreKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="js\DataRecord.js" />
     <Content Include="pages\about\about.css" />
     <Content Include="pages\about\about.html" />
     <Content Include="pages\about\about.js" />

@@ -1,4 +1,4 @@
-﻿/// <reference path="~/js/data_record.js" />
+﻿/// <reference path="DataRecordParser.js" />
 var DataService;
 
 DataService = (function (eventEmitter) {
@@ -42,7 +42,7 @@ DataService = (function (eventEmitter) {
 
         for (i = 0; i < xmlQueryResults.length; i++) {
             try {
-                dataRecord = DataRecord.create(xmlQueryResults[i], endpoint);
+                dataRecord = DataRecordParser.create(xmlQueryResults[i], endpoint);
                 if (console && console.log) { console.log("Created DataRecord object: " + JSON.stringify(dataRecord)); }
 
                 if (dataRecord.date.getTime() > newestDate) { newestDate = dataRecord.date.getTime(); } // New high-water mark

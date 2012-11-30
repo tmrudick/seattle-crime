@@ -1,7 +1,39 @@
-/// <reference path="references/data_record.js" />
+/// <reference path="references/DataRecord.js" />
 
-test("Reference Test", function () {
-    ok(DataRecord, "DataRecord object found");
+test("fuzzyDate - 1 second", function () {
+    var date = new Date(Date.now() - (1000));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "1 second ago", "fuzzyDate correctly rounds '1 second'");
+});
+
+test("fuzzyDate - 2 second2", function () {
+    var date = new Date(Date.now() - (1000 * 2));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "2 seconds ago", "fuzzyDate correctly rounds '2 seconds'");
+});
+
+test("fuzzyDate - 1 minute", function () {
+    var date = new Date(Date.now() - (1000 * 60));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "1 minute ago", "fuzzyDate correctly rounds '1 minute'");
+});
+
+test("fuzzyDate - 2 minutes", function () {
+    var date = new Date(Date.now() - (1000 * 60 * 2));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "2 minutes ago", "fuzzyDate correctly rounds '2 minutes'");
+});
+
+test("fuzzyDate - 1 hour", function () {
+    var date = new Date(Date.now() - (1000 * 60 * 60));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "1 hour ago", "fuzzyDate correctly rounds '1 hour'");
+});
+
+test("fuzzyDate - 2 hours", function () {
+    var date = new Date(Date.now() - (1000 * 60 * 60 * 2));
+    var record = new DataRecord(date, null, null, null, null, null, null, null);
+    equal(record.fuzzyDate, "2 hours ago", "fuzzyDate correctly rounds '2 hours'");
 });
 
 // Sample tests
