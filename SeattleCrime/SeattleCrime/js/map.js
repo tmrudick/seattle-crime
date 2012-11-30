@@ -56,8 +56,11 @@
             if (!crimes) {
                 crimes = new WinJS.Binding.List();
 
-                // Bind the list view to the crimes list binding
-                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;
+                // Bind the list view to the crimes list binding using a sorted list
+                document.getElementById("crime-list").winControl.itemDataSource = crimes.createSorted(function (item1, item2) {
+                    return item2.date - item1.date;
+                }).dataSource;
+
                 document.getElementById("crime-list").addEventListener('iteminvoked', function (evt) {
                     evt.detail.itemPromise.then(function (item) {
                         Microsoft.Maps.Events.invoke(item.data.pushpin, 'click', { targetType: 'pushpin', target: item.data.pushpin });
