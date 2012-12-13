@@ -130,10 +130,12 @@
             map.setOptions({ height: window.innerHeight / 2, width: 320 });
             layoutCrimeListView();
             document.getElementById("crime-list").winControl.forceLayout();
+            document.getElementById("appbar").winControl.disabled = true;
         } else {
             map.setOptions({ height: null, width: null });
             document.getElementById("text-list").classList.remove('hidden');
             layoutCrimeListView();
+            document.getElementById("appbar").winControl.disabled = false;
         }
     });
 })();
