@@ -54,12 +54,16 @@
         var addDataToMap = function (event) {
             // TODO (tomrud): Don't do this anymore. Create a maps page control
             if (!crimes) {
-                crimes = new WinJS.Binding.List();
+                crimes = new WinJS.Binding.List().createSorted(function (item1, item2) {
+                    return item2.date - item1.date;
+                });
+
+                var sorted = crimes.createSorted(function (item1, item2) {
+                    return item2.date - item1.date;
+                });
 
                 // Bind the list view to the crimes list binding using a sorted list
-                document.getElementById("crime-list").winControl.itemDataSource = crimes.createSorted(function (item1, item2) {
-                    return item2.date - item1.date;
-                }).dataSource;
+                document.getElementById("crime-list").winControl.itemDataSource = crimes.dataSource;
 
                 document.getElementById("crime-list").addEventListener('iteminvoked', function (evt) {
                     evt.detail.itemPromise.then(function (item) {
