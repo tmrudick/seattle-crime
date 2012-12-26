@@ -49,7 +49,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackageCertificateKeyFile>SeattleCrime_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>D022D40690E8E46D6736061275DD1A24A97D25D6</PackageCertificateThumbprint>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
